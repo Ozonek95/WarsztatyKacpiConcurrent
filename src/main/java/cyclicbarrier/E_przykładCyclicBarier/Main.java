@@ -22,6 +22,7 @@ public class Main {
 
     public static void main(String[] args) {
         //TODO: Odpal program, przeglądnij kod, zrozum koncept :)
+        //TODO: Po analizie kodu i gdy już będziesz umiał opowiedzieć własnymi słowamy czym jest CyclicBarrier zmień gałąź na zadankoCyclicBarrier
 
         Zjeżdżalnia zjeżdżalnia = new Zjeżdżalnia(4);
 
