@@ -33,9 +33,9 @@ public class Main {
          * */
 
         BlockingQueue<ChętnyNaZjeżdżalnię> chętni =
-                Stream.generate(() -> new ChętnyNaZjeżdżalnię(barrier))
-                        .limit(ILOSC_CHETNYCH_NA_ZJEZDZALNIE)
-                        .collect(Collectors.toCollection(() -> new ArrayBlockingQueue<>(ILOSC_CHETNYCH_NA_ZJEZDZALNIE)));
+            Stream.generate(() -> new ChętnyNaZjeżdżalnię(barrier))
+                .limit(ILOSC_CHETNYCH_NA_ZJEZDZALNIE)
+                .collect(Collectors.toCollection(() -> new ArrayBlockingQueue<>(ILOSC_CHETNYCH_NA_ZJEZDZALNIE)));
 
         ExecutorService executorService = Executors.newFixedThreadPool(4, new MyThreadFactory("Zjeżdżający "));
 
