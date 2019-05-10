@@ -9,21 +9,11 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 class GraczGrającyWGrę implements Runnable {
 
-  private CyclicBarrier cyclicBarrier;
 
   @Override
   public void run() {
-    try {
-      Thread.sleep(ThreadLocalRandom.current().nextInt(5000));
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    try {
-      System.out.println("Skończyłem wyścig "+this);
-      cyclicBarrier.await();
-    } catch (InterruptedException | BrokenBarrierException e) {
-      e.printStackTrace();
-    }
+    System.out.println("Rozpoczynam wyścig!");
+    System.out.println("Dojechałem na metę!");
   }
 
   @Override
@@ -32,6 +22,6 @@ class GraczGrającyWGrę implements Runnable {
   }
 
   public void setCyclicBarrier(CyclicBarrier cyclicBarrier) {
-    this.cyclicBarrier = cyclicBarrier;
+
   }
 }
