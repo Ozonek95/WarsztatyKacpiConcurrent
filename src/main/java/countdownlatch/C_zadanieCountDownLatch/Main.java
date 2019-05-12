@@ -1,6 +1,7 @@
 package countdownlatch.C_zadanieCountDownLatch;
 
 import fabryczkapomocnicza.MyThreadFactory;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -31,7 +32,7 @@ public class Main {
 
         ThreadFactory threadFactory = new MyThreadFactory("Kierowca");
         ExecutorService executorService = Executors.newFixedThreadPool(5, threadFactory);
-        for(int i = 0; i < LICZBA_UCZESTNIKÓW; i++) {
+        for (int i = 0; i < LICZBA_UCZESTNIKÓW; i++) {
             executorService.submit(new Driver(latch, race));
         }
         executorService.shutdown();
@@ -42,7 +43,7 @@ class Race implements Runnable {
     private final CountDownLatch latch;
     private final CopyOnWriteArrayList<Driver> driversReadyToStart = new CopyOnWriteArrayList<>();
 
-    public Race(CountDownLatch countDownLatch) {
+    Race(CountDownLatch countDownLatch) {
         this.latch = countDownLatch;
     }
 
@@ -52,18 +53,26 @@ class Race implements Runnable {
     }
 
     void organiseRace() {
-        System.out.println("Wysyłam info o wyścigu. Czekamy na uczestników");
         try {
             latch.await();
-            System.out.println("Wszyscy są, ruszamy");
+            startRace();
         } catch (InterruptedException e) {
-            System.err.println("Wpadła policja koniec imprezy");
+            System.err.println(e.getMessage());
         }
+    }
+
+    void startRace() {
+        System.out.println("Wszyscy są, ruszamy");
     }
 
     void addDriver(Driver driver) {
         driversReadyToStart.add(driver);
     }
+
+    int getDriversReadyToStart() {
+        return driversReadyToStart.size();
+    }
+
 }
 
 class Driver implements Runnable {
@@ -78,7 +87,7 @@ class Driver implements Runnable {
     @Override
     public void run() {
         System.out.println("Dostałem sms o wyścigu. Wyruszam na start "
-            + Thread.currentThread().getName());
+                + Thread.currentThread().getName());
         driveToStartLine();
         comeToStartLine();
     }
@@ -86,7 +95,7 @@ class Driver implements Runnable {
     void driveToStartLine() {
         System.out.println("Jadę na start " + Thread.currentThread().getName());
         try {
-            Thread.sleep(ThreadLocalRandom.current().nextInt(1000));
+            Thread.sleep(ThreadLocalRandom.current().nextInt(1000,2000));
         } catch (InterruptedException e) {
             System.err.println("Zepsuło mi się auto " + Thread.currentThread().getName());
         }
@@ -94,9 +103,10 @@ class Driver implements Runnable {
 
     void comeToStartLine() {
         System.out.println("Dojechałem na start i jestem gotowy "
-            + Thread.currentThread().getName());
-        race.addDriver(this);
+                + Thread.currentThread().getName());
         latch.countDown();
+        race.addDriver(this);
+
     }
 
 }
