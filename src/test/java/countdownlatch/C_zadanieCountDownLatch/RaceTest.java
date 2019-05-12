@@ -60,4 +60,11 @@ public class RaceTest {
         await().until(race::getDriversReadyToStart,equalTo(5));
         Assert.assertEquals(5, race.getDriversReadyToStart());
     }
+
+    @Test(invocationCount = 5, threadPoolSize = 5)
+    public void testIfBeforeLatchIsZeroDriversIsNotFive(){
+        await().until(latch::getCount,equalTo(2L));
+        Assert.assertTrue(race.getDriversReadyToStart()<5);
+        System.out.println();
+    }
 }
