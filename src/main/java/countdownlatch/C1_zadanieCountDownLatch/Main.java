@@ -4,53 +4,61 @@ import fabryczkapomocnicza.MyThreadFactory;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Witamy w zadaniu drugim z CountDownLatch. Po zdobyciu podstaw przedstawionych
- * w poprzednich przykładach powinno Ci ono pójść jak z płatka.
+ * Witamy w zadaniu drugim z CountDownLatch. Po zdobyciu podstaw przedstawionych w poprzednich
+ * przykładach powinno Ci ono pójść jak z płatka.
  *
  * @author Marcin Ogorzalek
  */
 
 public class Main {
   // TODO: Michale wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
-  // TODO: i kierowca nie może dłużej czekać
+  // TODO: i kierowca ekipy nie może dłużej czekać
   // TODO: Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy jak 5000 ms
   // TODO: podczas gdy chłopaki moga obrabiać jubilera nawet do 10_000 ms.
+  // TODO: Kto zdąży ten ucieknie, kto nie - idzie do paki.
   // TODO: Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
 
-  static final int EKIPA = 4;
+  static final int ILOSC_LUDZI_W_EKIPIE = 4;
 
   public static void main(String[] args) {
-    CountDownLatch latch = new CountDownLatch(EKIPA);
-    kierowcaPodjeżdzaNaMiejsce(latch);
-    ekipaWpadaDoJubilera(latch);
+
+    CountDownLatch latch = new CountDownLatch(ILOSC_LUDZI_W_EKIPIE);
+
+    ExecutorService executorService = Executors.newFixedThreadPool(ILOSC_LUDZI_W_EKIPIE,
+        new MyThreadFactory("Członek ekipy"));
+
+    kierowcaPodjeżdzaNaRobotę(latch, executorService);
+    ekipaZaczynaObrabiaćJubilera(latch, executorService);
   }
 
-  private static void ekipaWpadaDoJubilera(CountDownLatch latch) {
-    ThreadFactory ekipa = new MyThreadFactory("Członek ekipy");
-    ExecutorService executorService = Executors.newFixedThreadPool(EKIPA, ekipa);
-    for (int i = 0; i < EKIPA; i++) {
+  private static void kierowcaPodjeżdzaNaRobotę(CountDownLatch latch,
+      ExecutorService executorService) {
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    executor.submit(new Kierowca(latch, executorService));
+    executor.shutdown();
+  }
+
+  private static void ekipaZaczynaObrabiaćJubilera(CountDownLatch latch,
+      ExecutorService executorService) {
+    for (int i = 0; i < ILOSC_LUDZI_W_EKIPIE; i++) {
       executorService.submit(new CzłonekEkipy(latch));
     }
     executorService.shutdown();
   }
-
-  private static void kierowcaPodjeżdzaNaMiejsce(CountDownLatch latch) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.submit(new Kierowca(latch));
-    executor.shutdown();
-  }
 }
 
 class Kierowca implements Runnable {
-  private final CountDownLatch latch;
 
-  Kierowca(CountDownLatch latch) {
+  private final CountDownLatch latch;
+  private final ExecutorService executorService;
+
+  public Kierowca(CountDownLatch latch, ExecutorService executorService) {
     this.latch = latch;
+    this.executorService = executorService;
   }
 
   @Override
@@ -62,6 +70,7 @@ class Kierowca implements Runnable {
   void ucieczka() {
     try {
       latch.await(5000, TimeUnit.MILLISECONDS);
+      executorService.shutdownNow();
       System.out.println("No najwyższy czas");
     } catch (InterruptedException e) {
       System.err.println("Dopadli nas!");
@@ -70,6 +79,7 @@ class Kierowca implements Runnable {
 }
 
 class CzłonekEkipy implements Runnable {
+
   private final CountDownLatch latch;
 
   public CzłonekEkipy(CountDownLatch latch) {
@@ -82,17 +92,17 @@ class CzłonekEkipy implements Runnable {
   }
 
   void kradzież() {
-    System.out.println(Thread.currentThread().getName()+" Chwila, zagarniam jeszcze łupy!!");
+    System.out.println(Thread.currentThread().getName() + " Chwila, zagarniam jeszcze łupy!!");
     try {
       Thread.sleep(ThreadLocalRandom.current().nextInt(10_000));
       czasUciekać();
     } catch (InterruptedException e) {
-      System.err.println(Thread.currentThread().getName()+" Dostałem kulkę! Już po mnie");
+      System.err.println(Thread.currentThread().getName() + " Dostałem kulkę! Już po mnie");
     }
   }
 
   void czasUciekać() {
-    System.out.println(Thread.currentThread().getName()+" Mam wszystko, czas się zwijać.");
+    System.out.println(Thread.currentThread().getName() + " Mam wszystko, czas się zwijać.");
     latch.countDown();
   }
 }
