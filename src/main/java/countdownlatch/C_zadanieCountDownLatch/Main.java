@@ -21,7 +21,7 @@ public class Main {
     //TODO: Napisz program, który symuluje NIELEGALNE WYSCIGI W LA! Coś jak Need For Speed ;D
     //TODO:5 kierowców otrzymało smsa z miejscem rozpoczęcia, czym prędzej jadą na miejsce! Jednak każdy jest w innym
     //TODO:miejscu miasta, więc czas dotarcia będzie różny. Dopiero kiedy wszyscy pojawią się na miejscu - wyścig ruszy!
-    //TODO:Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
+    //TODO:Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie. 
 
     static final int LICZBA_UCZESTNIKÓW = 5;
 
