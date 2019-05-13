@@ -1,0 +1,7 @@
+<suite name="LeanFTSuite" parallel="methods" thread-count="5">
+    <test name="LeanFtTest">
+        <classes>
+            <class name="countdownlatch.C_zadanieCountDownLatch.RaceTest" />
+        </classes>
+    </test>
+</suite>
