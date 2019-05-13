@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="WagonikTest" parallel="methods" thread-count="6">
+  <test name="WagonikTest">
+    <classes>
+      <class name="cyclicbarrier.F_zadanieBariera.WyciągTest" />
+    </classes>
+  </test>
+</suite>
