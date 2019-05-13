@@ -28,30 +28,14 @@ public class Main {
 
   //TODO: Napisz wyciąg na stok narciarski! Wagonik ma miejsce na 4 osoby, rusza kiedy wszyscy się załadują i tak w kółko ;)
   public static void main(String[] args) {
-    CyclicBarrier barrier = new CyclicBarrier(4, ()->System.out.println(KOMUNIKAT_WAGONIKA));
-    BlockingQueue<Narciarz> chętni = stwórzKolejkęNarciarzy(barrier);
-    uruchomWszystkichNarciarzy(chętni);
+
   }
 
   private static BlockingQueue<Narciarz> stwórzKolejkęNarciarzy(CyclicBarrier barrier) {
-    return Stream.generate(() -> new Narciarz(barrier))
-        .limit(ILOSC_NARCIARZY_CHETNYCH_DO_WYJAZDU)
-        .collect(Collectors
-            .toCollection(() -> new ArrayBlockingQueue<>(ILOSC_NARCIARZY_CHETNYCH_DO_WYJAZDU)));
+    return null;
   }
 
   private static void uruchomWszystkichNarciarzy(BlockingQueue<Narciarz> chętni) {
-    ExecutorService executorService = Executors
-        .newFixedThreadPool(4, new MyThreadFactory("Narciarz "));
-
-    for (int i = 0; i < ILOSC_NARCIARZY_CHETNYCH_DO_WYJAZDU; i++) {
-      try {
-        executorService.submit(Objects.requireNonNull(chętni.take()));
-      } catch (InterruptedException ignored) {
-        System.err.println(ignored.getMessage());
-      }
-    }
-    executorService.shutdown();
   }
 }
 
@@ -66,19 +50,12 @@ class Narciarz implements Runnable {
   @Override
   public void run() {
     System.out.println("Idę do wagonika " + this);
-    try {
-      Thread.sleep(ThreadLocalRandom.current().nextInt(5000));
-      wsiadamDoWagonika();
-    } catch (InterruptedException | BrokenBarrierException ignore) {
-      System.err.println(ignore.getMessage());
-    }
+   wsiadamDoWagonika();
   }
 
-  int wsiadamDoWagonika() throws InterruptedException, BrokenBarrierException {
+  void wsiadamDoWagonika()  {
     System.out.println("Ok, jestem gotów do wyjazdu! " + this);
-    System.out.println("W wagoniku siedzi już "
-        + (barrier.getNumberWaiting() + 1) + " narciarzy");
-    return barrier.await();
+  //    Co więcej tu potrzeba?
   }
 
   @Override
