@@ -11,6 +11,10 @@ import java.util.List;
  * @author Kacper Staszek
  */
 class Main {
+  
+  //TODO: 10 graczy jednocześnie rozpoczyna test. 5 pierwszych może rozegrać 3 wyścigi przeciwko sobie
+  //TODO: Pozostałych 5 graczy może skończyć rozwiązywać test.
+  //TODO: program kończy się, po rozegraniu 3 wyścigów dema. Wyścig kończy się, kiedy wszyscy gracze dojadą na metę.
 
   public static void main(String[] args) {
 
