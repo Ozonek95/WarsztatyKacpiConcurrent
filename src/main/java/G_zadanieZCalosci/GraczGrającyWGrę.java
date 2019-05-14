@@ -31,7 +31,7 @@ class GraczGrającyWGrę implements Runnable {
     return Thread.currentThread().getName();
   }
 
-  public void setCyclicBarrier(CyclicBarrier cyclicBarrier) {
+  void setCyclicBarrier(CyclicBarrier cyclicBarrier) {
     this.cyclicBarrier = cyclicBarrier;
   }
 }

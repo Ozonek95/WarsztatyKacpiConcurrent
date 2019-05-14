@@ -14,7 +14,7 @@ class DemonstracjaGry {
 
   private CyclicBarrier barrier;
   private List<GraczGrającyWGrę> listaGraczyKtórzyPrzesli;
-  CountDownLatch latch;
+  private CountDownLatch latch;
 
   DemonstracjaGry(List<GraczGrającyWGrę> listaGraczyKtórzyPrzesli, int ilośćRundDoRozegrania) {
     this.listaGraczyKtórzyPrzesli=listaGraczyKtórzyPrzesli;
@@ -50,7 +50,7 @@ class DemonstracjaGry {
     }
   }
 
-  void ustawBarieręDlaGraczy(){
+  private void ustawBarieręDlaGraczy(){
     listaGraczyKtórzyPrzesli.forEach(graczGrającyWGrę -> graczGrającyWGrę.setCyclicBarrier(barrier));
   }
 }

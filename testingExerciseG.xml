@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="DuzeZadanieTest" parallel="methods" thread-count="5">
+  <test name="DuzeZadanieTest">
+    <classes>
+      <class name="G_zadanieZCalosci.DuzeZadanieTest" />
+    </classes>
+  </test>
+</suite>

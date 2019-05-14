@@ -26,13 +26,6 @@ class TestZGry {
     listaGraczyRozwiązującychTest = generujGraczy();
   }
 
-  List<GraczRozwiązującyTest> generujGraczy() {
-    return Stream
-        .generate(() -> new GraczRozwiązującyTest(countDownLatch, this))
-        .limit(liczbaGraczyBiorących)
-        .collect(Collectors.toCollection(ArrayList::new));
-  }
-
   List<GraczGrającyWGrę> startujTest() {
     ExecutorService executorService = Executors
         .newFixedThreadPool(liczbaGraczyBiorących, new MyThreadFactory("Gracz rozwiązujący test "));
@@ -50,6 +43,13 @@ class TestZGry {
       ignored.getMessage();
     }
     throw new UnsupportedOperationException("Ktoś przecież musiał rozwiązać test!");
+  }
+
+  List<GraczRozwiązującyTest> generujGraczy() {
+    return Stream
+        .generate(() -> new GraczRozwiązującyTest(countDownLatch, this))
+        .limit(liczbaGraczyBiorących)
+        .collect(Collectors.toCollection(ArrayList::new));
   }
 
   CopyOnWriteArrayList<GraczGrającyWGrę> getListaGraczyKtórzyPrzeszli() {
