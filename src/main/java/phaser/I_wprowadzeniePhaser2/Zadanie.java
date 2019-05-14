@@ -1,4 +1,4 @@
-package phaser.H_wprowadzeniePhaser.phaserBarrier;
+package phaser.I_wprowadzeniePhaser2;
 
 import java.util.concurrent.Phaser;
 

@@ -1,4 +1,4 @@
-package phaser.H_wprowadzeniePhaser;
+package phaser.H_wprowadzeniePhaser1;
 
 import fabryczkapomocnicza.MyThreadFactory;
 import java.util.concurrent.ExecutorService;

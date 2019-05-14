@@ -1,16 +1,17 @@
-package phaser.H_wprowadzeniePhaser.phaserBarrier;
+package phaser.I_wprowadzeniePhaser2;
 
 import java.util.concurrent.Phaser;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Implementacja dłużej wykonującego się zadania.
+ * Implementacja krótko wykonującego się zadania.
  *
  * @author Kacper Staszek
  */
-class ZadanieDługie extends Zadanie {
+class ZadanieKrótkie extends Zadanie {
 
-  ZadanieDługie(Phaser phaser, int ilośćCykliDoWykonania) {
+
+  ZadanieKrótkie(Phaser phaser, int ilośćCykliDoWykonania) {
     super(phaser, ilośćCykliDoWykonania);
   }
 
@@ -20,7 +21,7 @@ class ZadanieDługie extends Zadanie {
     while (!jobDone) {
       System.out.println("Rozpoczynam " + Thread.currentThread().getName());
       try {
-        Thread.sleep(ThreadLocalRandom.current().nextInt(4000, 7000));
+        Thread.sleep(ThreadLocalRandom.current().nextInt(2000, 3000));
       } catch (InterruptedException ignored) {
         System.err.println(ignored.getMessage());
       }
@@ -30,3 +31,7 @@ class ZadanieDługie extends Zadanie {
     }
   }
 }
+
+
+
+
