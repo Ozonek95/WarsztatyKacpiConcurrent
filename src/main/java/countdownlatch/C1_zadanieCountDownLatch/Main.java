@@ -1,12 +1,8 @@
 package countdownlatch.C1_zadanieCountDownLatch;
 
-import fabryczkapomocnicza.MyThreadFactory;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Witamy w zadaniu drugim z CountDownLatch. Po zdobyciu podstaw przedstawionych w poprzednich
@@ -27,10 +23,9 @@ public class Main {
 
   public static void main(String[] args) {
 
-    CountDownLatch latch = new CountDownLatch(ILOSC_LUDZI_W_EKIPIE);
+    CountDownLatch latch = null;
 
-    ExecutorService executorService = Executors.newFixedThreadPool(ILOSC_LUDZI_W_EKIPIE,
-        new MyThreadFactory("Członek ekipy"));
+    ExecutorService executorService = null;
 
     kierowcaPodjeżdzaNaRobotę(latch, executorService);
     Więzienie więzienie = new Więzienie();
@@ -39,31 +34,19 @@ public class Main {
 
   private static void kierowcaPodjeżdzaNaRobotę(CountDownLatch latch,
       ExecutorService executorService) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.submit(new Kierowca(latch, executorService, 5000));
-    executor.shutdown();
+
   }
 
   private static void ekipaZaczynaObrabiaćJubilera(CountDownLatch latch,
       ExecutorService executorService, Więzienie więzienie) {
-    for (int i = 0; i < ILOSC_LUDZI_W_EKIPIE; i++) {
-      executorService.submit(new CzłonekEkipy(latch, więzienie));
-    }
-    executorService.shutdown();
+
   }
 }
 
 class Kierowca implements Runnable {
 
-  private final CountDownLatch latch;
-  private final ExecutorService executorService;
-  private final TimeUnit timeUnit = TimeUnit.MILLISECONDS;
-  private final long timeout;
-
   public Kierowca(CountDownLatch latch, ExecutorService executorService, long timeout) {
-    this.latch = latch;
-    this.executorService = executorService;
-    this.timeout = timeout;
+
   }
 
   @Override
@@ -73,24 +56,14 @@ class Kierowca implements Runnable {
   }
 
   void ucieczka() {
-    try {
-      latch.await(timeout, timeUnit);
-      executorService.shutdownNow();
-      System.out.println("No najwyższy czas");
-    } catch (InterruptedException e) {
-      System.err.println("Dopadli nas!");
-    }
+    System.out.println("No najwyższy czas");
+    System.err.println("Dopadli nas!");
   }
 }
 
 class CzłonekEkipy implements Runnable {
 
-  private final CountDownLatch latch;
-  private final Więzienie więzienie;
-
   CzłonekEkipy(CountDownLatch latch, Więzienie więzienie) {
-    this.latch = latch;
-    this.więzienie = więzienie;
   }
 
 
@@ -101,22 +74,17 @@ class CzłonekEkipy implements Runnable {
 
   void kradzież() {
     System.out.println(Thread.currentThread().getName() + " Chwila, zagarniam jeszcze łupy!!");
-    try {
-      Thread.sleep(ThreadLocalRandom.current().nextInt(10_000));
-      czasUciekać();
-    } catch (InterruptedException e) {
-      System.err.println(Thread.currentThread().getName() + " Dostałem kulkę! Już po mnie");
-      więzienie.złapZłodzieja(this);
-    }
+    czasUciekać();
+    System.err.println(Thread.currentThread().getName() + " Dostałem kulkę! Już po mnie");
   }
 
   void czasUciekać() {
     System.out.println(Thread.currentThread().getName() + " Mam wszystko, czas się zwijać.");
-    latch.countDown();
   }
 }
 
 class Więzienie {
+
   private final CopyOnWriteArrayList<CzłonekEkipy> więźniowie = new CopyOnWriteArrayList<>();
 
   void złapZłodzieja(CzłonekEkipy członekEkipy) {
@@ -128,3 +96,4 @@ class Więzienie {
     return więźniowie;
   }
 }
+
