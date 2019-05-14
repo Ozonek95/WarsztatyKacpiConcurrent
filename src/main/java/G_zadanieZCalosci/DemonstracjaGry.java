@@ -12,22 +12,45 @@ import java.util.concurrent.Executors;
  */
 class DemonstracjaGry {
 
-  DemonstracjaGry(List<GraczGrającyWGrę> listaGraczyKtórzyPrzesli, int ilośćRundDoRozegrania) {
+  private CyclicBarrier barrier;
+  private List<GraczGrającyWGrę> listaGraczyKtórzyPrzesli;
+  private CountDownLatch latch;
 
+  DemonstracjaGry(List<GraczGrającyWGrę> listaGraczyKtórzyPrzesli, int ilośćRundDoRozegrania) {
+    this.listaGraczyKtórzyPrzesli=listaGraczyKtórzyPrzesli;
+    this.latch = new CountDownLatch(ilośćRundDoRozegrania);
+
+
+    barrier = new CyclicBarrier(listaGraczyKtórzyPrzesli.size(),
+        () -> {
+          System.out.println("Rozpoczynam nową grę.");
+          latch.countDown();
+        });
   }
 
   void startujGrę() {
     ustawBarieręDlaGraczy();
     System.out.println("Rozpoczynamy wyścig!");
-    rozegranieWyścigów();
-    System.out.println("Demo zakończone!");
+    ExecutorService executorService = Executors
+        .newFixedThreadPool(listaGraczyKtórzyPrzesli.size(),
+            new MyThreadFactory("Gracz rozgrywający grę "));
+
+    for (int i = 0; i < 3; i++) {
+      for (GraczGrającyWGrę graczGrającyWGrę : listaGraczyKtórzyPrzesli) {
+        executorService.submit(graczGrającyWGrę);
+      }
+    }
+    executorService.shutdown();
+
+    try {
+      latch.await();
+      System.out.println("Demo zakończone!");
+    } catch (InterruptedException ignored) {
+      ignored.printStackTrace();
+    }
   }
 
-  private void rozegranieWyścigów() {
-
-  }
-
-  void ustawBarieręDlaGraczy(){
-
+  private void ustawBarieręDlaGraczy(){
+    listaGraczyKtórzyPrzesli.forEach(graczGrającyWGrę -> graczGrającyWGrę.setCyclicBarrier(barrier));
   }
 }
