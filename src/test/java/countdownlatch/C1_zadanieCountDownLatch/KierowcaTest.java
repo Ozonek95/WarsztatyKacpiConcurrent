@@ -29,8 +29,8 @@ public class KierowcaTest {
 
     try {
       Thread.sleep(CZAS_OCZEKIWANIA_KIEROWCY);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (InterruptedException ignored) {
+      System.err.println(ignored.getMessage());
     }
     Assert.assertEquals(więzienie.getWięźniowie().size(),latch.getCount());
   }
