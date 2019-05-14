@@ -21,7 +21,7 @@ public class Main {
   // TODO: Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy jak 5000 ms
   // TODO: podczas gdy chłopaki moga obrabiać jubilera nawet do 10_000 ms.
   // TODO: Kto zdąży ten ucieknie, kto nie - idzie do paki.
-  // TODO: Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
+  // TODO: Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie. 
 
   static final int ILOSC_LUDZI_W_EKIPIE = 4;
 
