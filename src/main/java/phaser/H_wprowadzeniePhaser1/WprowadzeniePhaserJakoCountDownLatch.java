@@ -84,12 +84,12 @@ public class WprowadzeniePhaserJakoCountDownLatch {
 
 class Task implements Runnable {
 
-  public static final String GREEN = "\033[0;32m";
-  public static final String RESET = "\033[0m";
+  private static final String GREEN = "\033[0;32m";
+  private static final String RESET = "\033[0m";
 
   private final Phaser phaser;
 
-  public Task(Phaser phaser) {
+  Task(Phaser phaser) {
     this.phaser = phaser;
   }
 

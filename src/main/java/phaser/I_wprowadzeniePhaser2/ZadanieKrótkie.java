@@ -21,7 +21,7 @@ class ZadanieKrótkie extends Zadanie {
     while (!jobDone) {
       System.out.println("Rozpoczynam " + Thread.currentThread().getName());
       try {
-        Thread.sleep(ThreadLocalRandom.current().nextInt(2000, 3000));
+        Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3500));
       } catch (InterruptedException ignored) {
         System.err.println(ignored.getMessage());
       }

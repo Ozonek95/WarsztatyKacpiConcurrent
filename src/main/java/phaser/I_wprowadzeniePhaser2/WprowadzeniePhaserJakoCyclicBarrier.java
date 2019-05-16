@@ -58,14 +58,14 @@ class WprowadzeniePhaserJakoCyclicBarrier {
     System.out.println("Wszystkie zadania zakończone!");
   }
 
-  private static ArrayBlockingQueue<Zadanie> stwórzDługieZadania(Phaser phaser, int ilośćZadań) {
+  static ArrayBlockingQueue<Zadanie> stwórzDługieZadania(Phaser phaser, int ilośćZadań) {
     return Stream
           .generate(() -> new ZadanieDługie(phaser, ILOŚĆ_FAZ_W_KTÓRYCH_UCZESTNICZY_ZADANIE_DŁUGIE))
           .limit(ilośćZadań)
           .collect(Collectors.toCollection(() -> new ArrayBlockingQueue<>(ilośćZadań)));
   }
 
-  private static ArrayBlockingQueue<Zadanie> stwórzKrótkieZadania(Phaser phaser, int ilośćZadań) {
+  static ArrayBlockingQueue<Zadanie> stwórzKrótkieZadania(Phaser phaser, int ilośćZadań) {
     return Stream
           .generate(() -> new ZadanieKrótkie(phaser, ILOŚĆ_FAZ_W_KTÓRYCH_UCZESTNICZY_ZADANIE_KRÓTKIE))
           .limit(ilośćZadań)

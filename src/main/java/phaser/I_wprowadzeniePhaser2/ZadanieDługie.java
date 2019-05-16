@@ -20,7 +20,7 @@ class ZadanieDługie extends Zadanie {
     while (!jobDone) {
       System.out.println("Rozpoczynam " + Thread.currentThread().getName());
       try {
-        Thread.sleep(ThreadLocalRandom.current().nextInt(4000, 7000));
+        Thread.sleep(ThreadLocalRandom.current().nextInt(3000, 4000));
       } catch (InterruptedException ignored) {
         System.err.println(ignored.getMessage());
       }
