@@ -147,13 +147,8 @@ class Więzienie {
   private final CopyOnWriteArrayList<CzłonekEkipy> więźniowie = new CopyOnWriteArrayList<>();
 
   void złapZłodzieja(CzłonekEkipy członekEkipy) {
-    try {
-      Thread.sleep(1);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    System.out.println("Bandzior złapany");
     więźniowie.add(członekEkipy);
+    System.out.println("Bandzior złapany");
   }
 
   CopyOnWriteArrayList<CzłonekEkipy> getWięźniowie() {
