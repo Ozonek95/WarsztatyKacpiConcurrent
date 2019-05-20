@@ -1,7 +1,6 @@
 package countdownlatch.C_zadanieCountDownLatch;
 
 import fabryczkapomocnicza.MyThreadFactory;
-
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -16,34 +15,64 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author Kacper Staszek
  */
+//TODO: Napisz program, który symuluje NIELEGALNE WYSCIGI W LA! Coś jak Need For Speed ;D
+// 5 kierowców otrzymało smsa z miejscem rozpoczęcia, czym prędzej jadą na miejsce! Jednak każdy jest w innym
+// miejscu miasta, więc czas dotarcia będzie różny. Dopiero kiedy wszyscy pojawią się na miejscu - wyścig ruszy!
+// Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
 public class Main {
 
-    //TODO: Napisz program, który symuluje NIELEGALNE WYSCIGI W LA! Coś jak Need For Speed ;D
-    //TODO:5 kierowców otrzymało smsa z miejscem rozpoczęcia, czym prędzej jadą na miejsce! Jednak każdy jest w innym
-    //TODO:miejscu miasta, więc czas dotarcia będzie różny. Dopiero kiedy wszyscy pojawią się na miejscu - wyścig ruszy!
-    //TODO:Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie. 
+    private int liczbaUczestników;
 
-    static final int LICZBA_UCZESTNIKÓW = 5;
+    Main(int liczbaUczestników) {
+        this.liczbaUczestników = liczbaUczestników;
+    }
 
     public static void main(String[] args) {
-        CountDownLatch latch = new CountDownLatch(LICZBA_UCZESTNIKÓW);
-        Race race = new Race(latch);
-        new Thread(race, "Wyścig").start();
+        Main main = new Main(8);
+        MetadaneWyścigu metadaneWyścigu = main.given();
+        main.when(metadaneWyścigu);
+    }
 
+    MetadaneWyścigu given() {
+        //GIVEN
+        CountDownLatch latch = new CountDownLatch(liczbaUczestników);
+        Wyścig wyścig = new Wyścig(latch);
         ThreadFactory threadFactory = new MyThreadFactory("Kierowca");
-        ExecutorService executorService = Executors.newFixedThreadPool(5, threadFactory);
-        for (int i = 0; i < LICZBA_UCZESTNIKÓW; i++) {
-            executorService.submit(new Driver(latch, race));
+        ExecutorService executorService = Executors
+            .newFixedThreadPool(liczbaUczestników, threadFactory);
+
+        return new MetadaneWyścigu(latch, wyścig, executorService);
+    }
+
+    void when(MetadaneWyścigu doTestów) {
+        //WHEN
+        new Thread(doTestów.wyścig, "Wyścig").start();
+        for (int i = 0; i < liczbaUczestników; i++) {
+            doTestów.executorService.submit(new Kierowca(doTestów.latch, doTestów.wyścig));
         }
-        executorService.shutdown();
+        doTestów.executorService.shutdown();
+    }
+
+    class MetadaneWyścigu {
+
+        CountDownLatch latch;
+        Wyścig wyścig;
+        ExecutorService executorService;
+
+        MetadaneWyścigu(CountDownLatch countDownLatch, Wyścig wyścig,
+            ExecutorService executorService) {
+            this.latch = countDownLatch;
+            this.wyścig = wyścig;
+            this.executorService = executorService;
+        }
     }
 }
 
-class Race implements Runnable {
+class Wyścig implements Runnable {
     private final CountDownLatch latch;
-    private final CopyOnWriteArrayList<Driver> driversReadyToStart = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Kierowca> driversReadyToStart = new CopyOnWriteArrayList<>();
 
-    Race(CountDownLatch countDownLatch) {
+    Wyścig(CountDownLatch countDownLatch) {
         this.latch = countDownLatch;
     }
 
@@ -65,8 +94,8 @@ class Race implements Runnable {
         System.out.println("Wszyscy są, ruszamy");
     }
 
-    void addDriver(Driver driver) {
-        driversReadyToStart.add(driver);
+    void addDriver(Kierowca kierowca) {
+        driversReadyToStart.add(kierowca);
     }
 
     int getDriversReadyToStart() {
@@ -75,13 +104,13 @@ class Race implements Runnable {
 
 }
 
-class Driver implements Runnable {
+class Kierowca implements Runnable {
     private final CountDownLatch latch;
-    private final Race race;
+    private final Wyścig wyścig;
 
-    Driver(CountDownLatch latch, Race race) {
+    Kierowca(CountDownLatch latch, Wyścig wyścig) {
         this.latch = latch;
-        this.race = race;
+        this.wyścig = wyścig;
     }
 
     @Override
@@ -105,7 +134,7 @@ class Driver implements Runnable {
         System.out.println("Dojechałem na start i jestem gotowy "
                 + Thread.currentThread().getName());
         latch.countDown();
-        race.addDriver(this);
+        wyścig.addDriver(this);
 
     }
 
