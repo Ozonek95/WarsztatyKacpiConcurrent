@@ -9,61 +9,87 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Witamy w zadaniu drugim z CountDownLatch. Po zdobyciu podstaw przedstawionych w poprzednich
+ * Witamy w zadaniu drugim z CountDownLatch.
+ * Ma ono na celu pokazdanie możliwości ustawienia czasu oczekiwania na CountDownLatch.
+ * Po zdobyciu podstaw przedstawionych w poprzednich
  * przykładach powinno Ci ono pójść jak z płatka.
+ * @see CountDownLatch
+ *
+ * Michał wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
+ * i kierowca ekipy nie może dłużej czekać
+ * Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy jak 5000 ms
+ * podczas gdy chłopaki moga obrabiać jubilera nawet do 10_000 ms.
+ * Kto zdąży ten ucieknie, kto nie - idzie do paki.
+ * Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
  *
  * @author Marcin Ogorzalek
  */
 
 public class Main {
-  // TODO: Michale wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
-  // TODO: i kierowca ekipy nie może dłużej czekać
-  // TODO: Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy jak 5000 ms
-  // TODO: podczas gdy chłopaki moga obrabiać jubilera nawet do 10_000 ms.
-  // TODO: Kto zdąży ten ucieknie, kto nie - idzie do paki.
-  // TODO: Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie. 
+  private int ilośćLudziWEkipie;
+  private long czasDoPrzyjazduPolicji;
+  private int maksymalnyCzasRoboty;
 
-  static final int ILOSC_LUDZI_W_EKIPIE = 4;
+
+  public Main(int ilośćLudziWEkipie, long czasDoPrzyjazduPolicji, int maksymalnyCzasRoboty) {
+    this.ilośćLudziWEkipie = ilośćLudziWEkipie;
+    this.czasDoPrzyjazduPolicji = czasDoPrzyjazduPolicji;
+    this.maksymalnyCzasRoboty = maksymalnyCzasRoboty;
+  }
 
   public static void main(String[] args) {
+    Main main = new Main(4, 5000, 10_000);
+    main.when(main.given());
+  }
 
-    CountDownLatch latch = new CountDownLatch(ILOSC_LUDZI_W_EKIPIE);
-
-    ExecutorService executorService = Executors.newFixedThreadPool(ILOSC_LUDZI_W_EKIPIE,
+  MetadaneNapadu given() {
+    CountDownLatch latch = new CountDownLatch(ilośćLudziWEkipie);
+    ExecutorService kierowcaExecutor = Executors.newSingleThreadExecutor();
+    ExecutorService ekipaExecutor = Executors.newFixedThreadPool(ilośćLudziWEkipie,
         new MyThreadFactory("Członek ekipy"));
-
-    kierowcaPodjeżdzaNaRobotę(latch, executorService);
     Więzienie więzienie = new Więzienie();
-    ekipaZaczynaObrabiaćJubilera(latch, executorService, więzienie);
+    return new MetadaneNapadu(latch, kierowcaExecutor, ekipaExecutor, więzienie);
   }
 
-  private static void kierowcaPodjeżdzaNaRobotę(CountDownLatch latch,
-      ExecutorService executorService) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.submit(new Kierowca(latch, executorService, 5000));
-    executor.shutdown();
-  }
+  void when(MetadaneNapadu metadaneNapadu) {
+    metadaneNapadu.kierowcaExecutor.submit(new Kierowca(metadaneNapadu.latch,
+        metadaneNapadu.ekipaExecutor, czasDoPrzyjazduPolicji));
+    metadaneNapadu.kierowcaExecutor.shutdown();
 
-  private static void ekipaZaczynaObrabiaćJubilera(CountDownLatch latch,
-      ExecutorService executorService, Więzienie więzienie) {
-    for (int i = 0; i < ILOSC_LUDZI_W_EKIPIE; i++) {
-      executorService.submit(new CzłonekEkipy(latch, więzienie));
+    for (int i = 0; i < ilośćLudziWEkipie; i++) {
+      metadaneNapadu.ekipaExecutor.submit(new CzłonekEkipy(metadaneNapadu.latch,
+          metadaneNapadu.więzienie, maksymalnyCzasRoboty));
     }
-    executorService.shutdown();
+    metadaneNapadu.ekipaExecutor.shutdown();
+  }
+
+  class MetadaneNapadu {
+    CountDownLatch latch;
+    ExecutorService kierowcaExecutor;
+    ExecutorService ekipaExecutor;
+    Więzienie więzienie;
+
+     MetadaneNapadu(CountDownLatch latch, ExecutorService kierowcaExecutor,
+        ExecutorService ekipaExecutor, Więzienie więzienie) {
+      this.latch = latch;
+      this.kierowcaExecutor = kierowcaExecutor;
+      this.ekipaExecutor = ekipaExecutor;
+      this.więzienie = więzienie;
+    }
   }
 }
 
 class Kierowca implements Runnable {
 
   private final CountDownLatch latch;
-  private final ExecutorService executorService;
+  private final ExecutorService ekipaExecutor;
   private final TimeUnit timeUnit = TimeUnit.MILLISECONDS;
-  private final long timeout;
+  private final long czasDoPrzyjazduPolicji;
 
-  public Kierowca(CountDownLatch latch, ExecutorService executorService, long timeout) {
+  Kierowca(CountDownLatch latch, ExecutorService ekipaExecutor, long czasDoPrzyjazduPolicji) {
     this.latch = latch;
-    this.executorService = executorService;
-    this.timeout = timeout;
+    this.ekipaExecutor = ekipaExecutor;
+    this.czasDoPrzyjazduPolicji = czasDoPrzyjazduPolicji;
   }
 
   @Override
@@ -74,8 +100,8 @@ class Kierowca implements Runnable {
 
   void ucieczka() {
     try {
-      latch.await(timeout, timeUnit);
-      executorService.shutdownNow();
+      latch.await(czasDoPrzyjazduPolicji, timeUnit);
+      ekipaExecutor.shutdownNow();
       System.out.println("No najwyższy czas");
     } catch (InterruptedException e) {
       System.err.println("Dopadli nas!");
@@ -87,12 +113,13 @@ class CzłonekEkipy implements Runnable {
 
   private final CountDownLatch latch;
   private final Więzienie więzienie;
+  private final int maksymalnyCzasRoboty;
 
-  CzłonekEkipy(CountDownLatch latch, Więzienie więzienie) {
+  CzłonekEkipy(CountDownLatch latch, Więzienie więzienie, int maksymalnyCzasRoboty) {
     this.latch = latch;
     this.więzienie = więzienie;
+    this.maksymalnyCzasRoboty = maksymalnyCzasRoboty;
   }
-
 
   @Override
   public void run() {
@@ -102,7 +129,7 @@ class CzłonekEkipy implements Runnable {
   void kradzież() {
     System.out.println(Thread.currentThread().getName() + " Chwila, zagarniam jeszcze łupy!!");
     try {
-      Thread.sleep(ThreadLocalRandom.current().nextInt(10_000));
+      Thread.sleep(ThreadLocalRandom.current().nextInt(maksymalnyCzasRoboty));
       czasUciekać();
     } catch (InterruptedException e) {
       System.err.println(Thread.currentThread().getName() + " Dostałem kulkę! Już po mnie");
@@ -120,11 +147,16 @@ class Więzienie {
   private final CopyOnWriteArrayList<CzłonekEkipy> więźniowie = new CopyOnWriteArrayList<>();
 
   void złapZłodzieja(CzłonekEkipy członekEkipy) {
+    try {
+      Thread.sleep(1);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     System.out.println("Bandzior złapany");
     więźniowie.add(członekEkipy);
   }
 
-  public CopyOnWriteArrayList<CzłonekEkipy> getWięźniowie() {
+  CopyOnWriteArrayList<CzłonekEkipy> getWięźniowie() {
     return więźniowie;
   }
 }

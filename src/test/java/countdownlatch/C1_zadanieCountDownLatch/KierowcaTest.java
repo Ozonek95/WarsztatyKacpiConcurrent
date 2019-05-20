@@ -38,7 +38,7 @@ public class KierowcaTest {
   private void ekipaZaczynaObrabiaćJubilera(CountDownLatch latch, ExecutorService executorService,
       Więzienie więzienie) {
       for (int i = 0; i < ILOSC_LUDZI_W_EKIPIE; i++) {
-        executorService.submit(new CzłonekEkipy(latch, więzienie));
+        executorService.submit(new CzłonekEkipy(latch, więzienie, 10000));
       }
       executorService.shutdown();
   }
