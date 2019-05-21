@@ -5,7 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Zadaniem każdego pasażera jest wsiąść do pociągu.
+ *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
  */
 class Pasażer implements Runnable{
     private final Pociąg pociąg;

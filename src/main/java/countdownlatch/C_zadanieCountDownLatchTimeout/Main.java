@@ -1,4 +1,4 @@
-package countdownlatch.C1_zadanieCountDownLatch;
+package countdownlatch.C_zadanieCountDownLatchTimeout;
 
 import fabryczkapomocnicza.MyThreadFactory;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -13,17 +13,19 @@ import java.util.concurrent.TimeUnit;
  * Ma ono na celu pokazdanie możliwości ustawienia czasu oczekiwania na CountDownLatch.
  * Po zdobyciu podstaw przedstawionych w poprzednich
  * przykładach powinno Ci ono pójść jak z płatka.
+ *
  * @see CountDownLatch
  *
- *
  * @author Marcin Ogorzalek
+ * @author Kacper Staszek
+ *
+ * TODO: Michał wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
+ *  i kierowca ekipy nie może dłużej czekać
+ *  Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy niż 5000 ms
+ *  podczas gdy chłopaki moga obrabiać jubilera nawet w 10_000 ms.
+ *  Kto zdąży ten ucieknie, kto nie - idzie do paki.
+ *  Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
  */
-// TODO: Michał wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
-//  i kierowca ekipy nie może dłużej czekać
-//  Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy niż 5000 ms
-//  podczas gdy chłopaki moga obrabiać jubilera nawet w 10_000 ms.
-//  Kto zdąży ten ucieknie, kto nie - idzie do paki.
-//  Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
 
 public class Main {
   private int ilośćLudziWEkipie;

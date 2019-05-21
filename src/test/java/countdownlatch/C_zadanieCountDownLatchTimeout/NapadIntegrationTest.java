@@ -1,15 +1,16 @@
-package countdownlatch.C1_zadanieCountDownLatch;
+package countdownlatch.C_zadanieCountDownLatchTimeout;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
-import countdownlatch.C1_zadanieCountDownLatch.Main.MetadaneNapadu;
+import countdownlatch.C_zadanieCountDownLatchTimeout.Main.MetadaneNapadu;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * @author Marcin Ogorzalek
+ * @author Kacper Staszek
+ * @author Marcin Ogorzałek
  */
 @Test(successPercentage = 95)
 public class NapadIntegrationTest {

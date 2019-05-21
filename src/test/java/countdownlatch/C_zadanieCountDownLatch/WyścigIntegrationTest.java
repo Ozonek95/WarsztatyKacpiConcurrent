@@ -12,6 +12,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+/**
+ *@author Kacper Staszek
+ *@author Marcin Ogorzałek
+ */
 @Test(successPercentage = 95)
 public class WyścigIntegrationTest {
 

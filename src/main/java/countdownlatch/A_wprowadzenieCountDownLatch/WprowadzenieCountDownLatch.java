@@ -6,21 +6,23 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * W tej klasie zapoznamy się z CountDownLatch
  *
- *
- * @see CountDownLatch
  * <p>CountDownLatch to klasa, która pozwala nam sterować naszym programem tak, żeby jeden wątek poczekał
  * z rozpoczęciem swojego zadania, aż kilka innych skończy pracę.</p>
  * <p>Wątki te będą współdzieliły referencję do naszej
  * instancji CountDownLatch. Na przykład, jeżeli mamy do wykonania 3 zadania, ale trzecie może ruszyć dopiero jak dwa pierwsze,
  * które mogą działać równolegle - się zakończą.</p>
- * <p>W konstruktorze CountDownLatch przekazujemy  ile wątków musi zakończyć swoją pracę, żeby kolejny mógł rozpoczą</p>
+ * <p>W konstruktorze CountDownLatch przekazujemy  ile wątków musi zakończyć swoją pracę, żeby kolejny mógł rozpocząć</p>
+ *
+ * @see CountDownLatch
  *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
+ *
+ * TODO: Uruchom program, przeanalizuj kod i działanie.
+ *  Poznaj odpowiedź na pytanie co zmienia parametr dodany do konstruktora CountDownLatch
  */
-
 public class WprowadzenieCountDownLatch {
-    //TODO: Uruchom program, przeanalizuj kod i działanie.
-    //TODO: Poznaj odpowiedź na pytanie co zmienia parametr dodany do konstruktora CountDownLatch
+
 
     private static final int WIELKOSC_LICZNIKA = 3;
 

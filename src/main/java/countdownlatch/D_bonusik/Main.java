@@ -1,4 +1,10 @@
 package countdownlatch.D_bonusik;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Różnica między CountDownLatch, a thread.join();
  * <p>
@@ -18,18 +24,16 @@ package countdownlatch.D_bonusik;
  * <p>
  * Już po pierwszym zadaniu możemy wywołać metodę latch.countDown();
  * <p>
+ *
+ * @author Kacper Staszek
+ * @author Marcin Ogorzałek
+ *
  * TODO: znalezienie sobie miejsca może się odbywać, kiedy pociąg już ruszy! (spróbuj to zaimplementować w klasie Pasażer :))
- * @see countdownlatch.B_przykładCountdownLatch.Pasażer
+ *  Odpal program kilka razy i zaobserwuj, jak to działa!
  */
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
-    //TODO: Odpal program kilka razy i zaobserwuj, jak to działa!
 
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(3);

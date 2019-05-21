@@ -24,7 +24,6 @@ abstract class Zadanie implements  Runnable {
   /**
    * Jeżeli dana faza Phasera jest równa ilości cyklów do wykonania, zadanie skończy się wykonywać i wyrejestruje się z Phasera.
    * inaczej będzie kontynuowane.
-   *
    */
   void sprawdźCzyKontynuować() {
     if (phaser.getPhase() == ilośćCykliDoWykonania) {

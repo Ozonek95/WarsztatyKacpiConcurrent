@@ -9,14 +9,16 @@ import java.util.concurrent.*;
  * właśnie otrzymało list, więc lecą ile sił w nogach na pociąg.
  * Konduktor jest na tyle spoko, że zaczeka na wszystkich, zanim ruszy.</p>
  *
- * @see Pociąg Zwróć uwagę na linię 26 w klasie Pociąg.
+ * @see Pociąg Zwróć uwagę na linię 35 w klasie Pociąg.
  *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
+ *
+ * TODO:Uruchom program kilka razy, prześledź działanie.
+ *  Zakomentuj linię 35 w klasie Pociąg, uruchom program i zrozum działanie metody await();
  */
 public class Main {
 
-    //TODO:Uruchom program kilka razy, prześledź działanie.
-    //TODO:Zakomentuj linię 26 w klasie Pociąg, uruchom program i zrozum działanie metody await();
 
     private static final int ILOSC_ZAREZERWOWANYCH_BILETOW = 10;
 

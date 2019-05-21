@@ -14,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * nie jesteś czegoś pewien. Jeżeli zrozumiałeś koncept, z zadaniem powinieneś sobie poradzić sam :)</p>
  *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
  */
 //TODO: Napisz program, który symuluje NIELEGALNE WYSCIGI W LA! Coś jak Need For Speed ;D
 // 5 kierowców otrzymało smsa z miejscem rozpoczęcia, czym prędzej jadą na miejsce! Jednak każdy jest w innym
