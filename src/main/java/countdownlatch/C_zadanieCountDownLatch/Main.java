@@ -29,12 +29,12 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main(8);
-        MetadaneWyścigu metadaneWyścigu = main.given();
-        main.when(metadaneWyścigu);
+        MetadaneWyścigu metadaneWyścigu = main.stwórzPotrzebneObiekty();
+        main.uruchomWątki(metadaneWyścigu);
     }
 
-    MetadaneWyścigu given() {
-        //GIVEN
+    MetadaneWyścigu stwórzPotrzebneObiekty() {
+
         CountDownLatch latch = new CountDownLatch(liczbaUczestników);
         Wyścig wyścig = new Wyścig(latch);
         ThreadFactory threadFactory = new MyThreadFactory("Kierowca");
@@ -44,8 +44,8 @@ public class Main {
         return new MetadaneWyścigu(latch, wyścig, executorService);
     }
 
-    void when(MetadaneWyścigu doTestów) {
-        //WHEN
+    void uruchomWątki(MetadaneWyścigu doTestów) {
+
         new Thread(doTestów.wyścig, "Wyścig").start();
         for (int i = 0; i < liczbaUczestników; i++) {
             doTestów.executorService.submit(new Kierowca(doTestów.latch, doTestów.wyścig));
