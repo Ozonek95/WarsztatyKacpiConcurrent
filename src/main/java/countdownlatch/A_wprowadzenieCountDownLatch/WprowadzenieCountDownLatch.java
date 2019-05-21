@@ -42,7 +42,6 @@ public class WprowadzenieCountDownLatch {
         }
         System.out.println("Ok, wszyscy skończyli, to lecę dalej!");
     }
-
 }
 
 class Task implements Runnable {
@@ -64,3 +63,4 @@ class Task implements Runnable {
         latch.countDown(); //Dekrementuje nasz licznik o jeden. Kiedy licznik osiągnie zero, zadanie oczekujące się rozpocznie.
     }
 }
+

@@ -15,7 +15,7 @@ import java.util.concurrent.*;
  * @author Marcin Ogorzałek
  *
  * TODO:Uruchom program kilka razy, prześledź działanie.
- *  Zakomentuj linię 35 w klasie Pociąg, uruchom program i zrozum działanie metody await();
+ *  Zakomentuj oznaczoną linię w klasie Pociąg, uruchom program i zrozum działanie metody await();
  */
 public class Main {
 

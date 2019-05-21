@@ -2,7 +2,7 @@
 <suite name="RaceSuiteTest" parallel="methods" thread-count="6">
     <test name="RaceSuiteTest">
         <classes>
-            <class name="countdownlatch.C_zadanieCountDownLatch.WyścigIntegrationTest" />
+            <class name="countdownlatch.C_zadanieCountDownLatch.WielkiWyścigWLAIntegrationTest" />
         </classes>
     </test>
 </suite>

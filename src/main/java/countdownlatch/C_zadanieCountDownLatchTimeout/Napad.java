@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @author Marcin Ogorzalek
  * @author Kacper Staszek
  *
- * TODO: Michał wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
+ * TODO: Kucharzz (czyli Kuchar wraz z kompanami) obrabia jubilera. Policja już jedzie na miejsce zdarzenia
  *  i kierowca ekipy nie może dłużej czekać
  *  Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy niż 5000 ms
  *  podczas gdy chłopaki moga obrabiać jubilera nawet w 10_000 ms.
@@ -81,79 +81,4 @@ public class Napad {
   }
 }
 
-class Kierowca implements Runnable {
 
-  private final CountDownLatch latch;
-  private final ExecutorService ekipaExecutor;
-  private final TimeUnit timeUnit = TimeUnit.MILLISECONDS;
-  private final long czasDoPrzyjazduPolicji;
-
-  Kierowca(CountDownLatch latch, ExecutorService ekipaExecutor, long czasDoPrzyjazduPolicji) {
-    this.latch = latch;
-    this.ekipaExecutor = ekipaExecutor;
-    this.czasDoPrzyjazduPolicji = czasDoPrzyjazduPolicji;
-  }
-
-  @Override
-  public void run() {
-    System.out.println("Szybko chłopaki, do samochodzu. Policja jest w drodze");
-    ucieczka();
-  }
-
-  void ucieczka() {
-    try {
-      latch.await(czasDoPrzyjazduPolicji, timeUnit);
-      ekipaExecutor.shutdownNow();
-      System.out.println("No najwyższy czas");
-    } catch (InterruptedException e) {
-      System.err.println("Dopadli nas!");
-    }
-  }
-}
-
-class CzłonekEkipy implements Runnable {
-
-  private final CountDownLatch latch;
-  private final Więzienie więzienie;
-  private final int maksymalnyCzasRoboty;
-
-  CzłonekEkipy(CountDownLatch latch, Więzienie więzienie, int maksymalnyCzasRoboty) {
-    this.latch = latch;
-    this.więzienie = więzienie;
-    this.maksymalnyCzasRoboty = maksymalnyCzasRoboty;
-  }
-
-  @Override
-  public void run() {
-    kradzież();
-  }
-
-  void kradzież() {
-    System.out.println(Thread.currentThread().getName() + " Chwila, zagarniam jeszcze łupy!!");
-    try {
-      Thread.sleep(ThreadLocalRandom.current().nextInt(maksymalnyCzasRoboty));
-      czasUciekać();
-    } catch (InterruptedException e) {
-      System.err.println(Thread.currentThread().getName() + " Dostałem kulkę! Już po mnie");
-      więzienie.złapZłodzieja(this);
-    }
-  }
-
-  void czasUciekać() {
-    System.out.println(Thread.currentThread().getName() + " Mam wszystko, czas się zwijać.");
-    latch.countDown();
-  }
-}
-
-class Więzienie {
-  private final CopyOnWriteArrayList<CzłonekEkipy> więźniowie = new CopyOnWriteArrayList<>();
-
-  void złapZłodzieja(CzłonekEkipy członekEkipy) {
-    więźniowie.add(członekEkipy);
-    System.out.println("Bandzior złapany");
-  }
-
-  CopyOnWriteArrayList<CzłonekEkipy> getWięźniowie() {
-    return więźniowie;
-  }
-}

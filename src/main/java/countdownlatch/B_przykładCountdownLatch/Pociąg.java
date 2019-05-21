@@ -34,7 +34,8 @@ class Pociąg {
     }
 
     void pociągOdjeżdża() throws InterruptedException {
-        latch.await(); // zakomentuj tę linijkę i zobacz jak program zadziała. Teraz powinieneś zrozumieć, co tak naprawdę robi await();
+        // FIXME: oznaczona linia! tę linijkę zakomentuj i zobacz jak program zadziała. Teraz powinieneś zrozumieć, co tak naprawdę robi await();
+        latch.await();
         System.out.println("Jedziemy do Hogwartu!");
     }
 
