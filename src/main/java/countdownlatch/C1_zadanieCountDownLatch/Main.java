@@ -15,15 +15,15 @@ import java.util.concurrent.TimeUnit;
  * przykładach powinno Ci ono pójść jak z płatka.
  * @see CountDownLatch
  *
- * Michał wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
- * i kierowca ekipy nie może dłużej czekać
- * Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy jak 5000 ms
- * podczas gdy chłopaki moga obrabiać jubilera nawet do 10_000 ms.
- * Kto zdąży ten ucieknie, kto nie - idzie do paki.
- * Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
  *
  * @author Marcin Ogorzalek
  */
+// TODO: Michał wraz z kompanami obrabia jubilera. Policja już jedzie na miejsce zdarzenia
+//  i kierowca ekipy nie może dłużej czekać
+//  Napisz program który to sumuluje. Czas oczekiwania kierowcy nie może być dłuższy niż 5000 ms
+//  podczas gdy chłopaki moga obrabiać jubilera nawet w 10_000 ms.
+//  Kto zdąży ten ucieknie, kto nie - idzie do paki.
+//  Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
 
 public class Main {
   private int ilośćLudziWEkipie;
@@ -31,7 +31,7 @@ public class Main {
   private int maksymalnyCzasRoboty;
 
 
-  public Main(int ilośćLudziWEkipie, long czasDoPrzyjazduPolicji, int maksymalnyCzasRoboty) {
+  Main(int ilośćLudziWEkipie, long czasDoPrzyjazduPolicji, int maksymalnyCzasRoboty) {
     this.ilośćLudziWEkipie = ilośćLudziWEkipie;
     this.czasDoPrzyjazduPolicji = czasDoPrzyjazduPolicji;
     this.maksymalnyCzasRoboty = maksymalnyCzasRoboty;
@@ -39,10 +39,10 @@ public class Main {
 
   public static void main(String[] args) {
     Main main = new Main(4, 5000, 10_000);
-    main.when(main.given());
+    main.uruchamianieWątków(main.tworzeniePotrzebnychObiektów());
   }
 
-  MetadaneNapadu given() {
+  MetadaneNapadu tworzeniePotrzebnychObiektów() {
     CountDownLatch latch = new CountDownLatch(ilośćLudziWEkipie);
     ExecutorService kierowcaExecutor = Executors.newSingleThreadExecutor();
     ExecutorService ekipaExecutor = Executors.newFixedThreadPool(ilośćLudziWEkipie,
@@ -51,7 +51,7 @@ public class Main {
     return new MetadaneNapadu(latch, kierowcaExecutor, ekipaExecutor, więzienie);
   }
 
-  void when(MetadaneNapadu metadaneNapadu) {
+  void uruchamianieWątków(MetadaneNapadu metadaneNapadu) {
     metadaneNapadu.kierowcaExecutor.submit(new Kierowca(metadaneNapadu.latch,
         metadaneNapadu.ekipaExecutor, czasDoPrzyjazduPolicji));
     metadaneNapadu.kierowcaExecutor.shutdown();
