@@ -4,7 +4,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
-import countdownlatch.C_zadanieCountDownLatchTimeout.Main.MetadaneNapadu;
+import countdownlatch.C_zadanieCountDownLatchTimeout.Napad.MetadaneNapadu;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
  * @author Kacper Staszek
  * @author Marcin Ogorzałek
  */
-@Test(successPercentage = 95)
+@Test(successPercentage = 90)
 public class NapadIntegrationTest {
 
   @Test(invocationCount = 1000, threadPoolSize = 100,
@@ -20,10 +20,10 @@ public class NapadIntegrationTest {
   public void whenThievesAreCatchThenGoToJail(int teamSize,
       long timeToPoliceArrive, int robberyTime) {
     // Given
-    Main main = new Main(teamSize, timeToPoliceArrive, robberyTime);
-    MetadaneNapadu given = main.tworzeniePotrzebnychObiektów();
+    Napad napad = new Napad(teamSize, timeToPoliceArrive, robberyTime);
+    MetadaneNapadu given = napad.tworzeniePotrzebnychObiektów();
     // When
-    main.uruchamianieWątków(given);
+    napad.uruchamianieWątków(given);
     try {
       MILLISECONDS.sleep(robberyTime);
     } catch (InterruptedException ignored) {
@@ -38,10 +38,10 @@ public class NapadIntegrationTest {
   public void whenPoliceIsLateToRobberyJailIsEmpty(int teamSize,
       long timeToPoliceArrive, int robberyTime) {
     // Given
-    Main main = new Main(teamSize, timeToPoliceArrive, robberyTime);
-    MetadaneNapadu given = main.tworzeniePotrzebnychObiektów();
+    Napad napad = new Napad(teamSize, timeToPoliceArrive, robberyTime);
+    MetadaneNapadu given = napad.tworzeniePotrzebnychObiektów();
     // When
-    main.uruchamianieWątków(given);
+    napad.uruchamianieWątków(given);
     try {
       MILLISECONDS.sleep(robberyTime);
     } catch (InterruptedException ignored) {
@@ -56,10 +56,10 @@ public class NapadIntegrationTest {
   public void whenTeamSizeZeroOrLessThenThrowsIllegalArgumentException(int teamSize,
       long timeToPoliceArrive, int robberyTime) {
     // Given
-    Main main = new Main(teamSize, timeToPoliceArrive, robberyTime);
-    MetadaneNapadu given = main.tworzeniePotrzebnychObiektów();
+    Napad napad = new Napad(teamSize, timeToPoliceArrive, robberyTime);
+    MetadaneNapadu given = napad.tworzeniePotrzebnychObiektów();
     // When
-    main.uruchamianieWątków(given);
+    napad.uruchamianieWątków(given);
     try {
       MILLISECONDS.sleep(robberyTime);
     } catch (InterruptedException ignored) {

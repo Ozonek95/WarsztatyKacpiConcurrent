@@ -27,21 +27,21 @@ import java.util.concurrent.TimeUnit;
  *  Skorzystaj śmiało z fabryki wątków, którą umieściłem w projekcie.
  */
 
-public class Main {
+public class Napad {
   private int ilośćLudziWEkipie;
   private long czasDoPrzyjazduPolicji;
   private int maksymalnyCzasRoboty;
 
 
-  Main(int ilośćLudziWEkipie, long czasDoPrzyjazduPolicji, int maksymalnyCzasRoboty) {
+  Napad(int ilośćLudziWEkipie, long czasDoPrzyjazduPolicji, int maksymalnyCzasRoboty) {
     this.ilośćLudziWEkipie = ilośćLudziWEkipie;
     this.czasDoPrzyjazduPolicji = czasDoPrzyjazduPolicji;
     this.maksymalnyCzasRoboty = maksymalnyCzasRoboty;
   }
 
   public static void main(String[] args) {
-    Main main = new Main(4, 5000, 10_000);
-    main.uruchamianieWątków(main.tworzeniePotrzebnychObiektów());
+    Napad napad = new Napad(4, 5000, 10_000);
+    napad.uruchamianieWątków(napad.tworzeniePotrzebnychObiektów());
   }
 
   MetadaneNapadu tworzeniePotrzebnychObiektów() {

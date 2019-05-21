@@ -15,13 +15,15 @@ import java.util.stream.Stream;
  * z których każda może się ustawić w nieco innym czasie), możemy zastosować klasę CyclicBarrier.
  *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
+ *
+ * TODO: Odpal program, przeglądnij kod, zrozum koncept :)
  */
 public class Main {
 
     private static final int ILOSC_CHETNYCH_NA_ZJEZDZALNIE = 20;
 
     public static void main(String[] args) {
-        //TODO: Odpal program, przeglądnij kod, zrozum koncept :)
 
         Zjeżdżalnia zjeżdżalnia = new Zjeżdżalnia(4);
 
@@ -30,7 +32,7 @@ public class Main {
         /*
          * Tworzymy kolejkę 20 chętnych na zjeżdżalnię, każdy z nich otrzymuje referencję do naszej bariery.
          * Przy okazji fajny sposób na stworzenie kolejki z użyciem streamów :)
-         * */
+         */
 
         BlockingQueue<ChętnyNaZjeżdżalnię> chętni =
             Stream.generate(() -> new ChętnyNaZjeżdżalnię(barrier))

@@ -2,7 +2,7 @@
 <suite name="WagonikTest" parallel="methods" thread-count="6">
   <test name="WagonikTest">
     <classes>
-      <class name="cyclicbarrier.F_zadanieBariera.WyciągTest" />
+      <class name="cyclicbarrier.F_zadanieBariera.WyciągIntegrationTest" />
     </classes>
   </test>
 </suite>

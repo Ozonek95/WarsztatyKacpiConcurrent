@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Zadaniem chętnego jest podejść do stanowiska i zająć miejsce
  *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
  */
 class ChętnyNaZjeżdżalnię implements Runnable {
 

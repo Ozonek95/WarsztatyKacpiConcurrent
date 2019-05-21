@@ -8,6 +8,7 @@ import java.util.concurrent.CyclicBarrier;
  * da sygnał do startu.
  *
  * @author Kacper Staszek
+ * @author Marcin Ogorzałek
  */
 class Zjeżdżalnia implements Runnable {
     private final int iloscTorow;
