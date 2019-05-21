@@ -2,7 +2,7 @@
 <suite name="RobberySuiteTest" parallel="methods" thread-count="10">
     <test name="RobberySuiteTest">
         <classes>
-            <class name="countdownlatch.C_zadanieCountDownLatchTimeout.NapadIntegrationTest" />
+            <class name="countdownlatch.E_zadanieCountDownLatchTimeout.NapadIntegrationTest" />
         </classes>
     </test>
 </suite>

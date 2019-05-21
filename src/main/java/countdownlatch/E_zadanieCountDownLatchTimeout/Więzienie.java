@@ -1,4 +1,4 @@
-package countdownlatch.C_zadanieCountDownLatchTimeout;
+package countdownlatch.E_zadanieCountDownLatchTimeout;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 

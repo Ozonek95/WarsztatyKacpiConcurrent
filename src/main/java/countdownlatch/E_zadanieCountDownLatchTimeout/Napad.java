@@ -1,12 +1,9 @@
-package countdownlatch.C_zadanieCountDownLatchTimeout;
+package countdownlatch.E_zadanieCountDownLatchTimeout;
 
 import fabryczkapomocnicza.MyThreadFactory;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Witamy w zadaniu drugim z CountDownLatch.

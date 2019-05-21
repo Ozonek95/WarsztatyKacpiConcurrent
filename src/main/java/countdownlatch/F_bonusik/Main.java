@@ -1,4 +1,4 @@
-package countdownlatch.D_bonusik;
+package countdownlatch.F_bonusik;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
