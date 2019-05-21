@@ -8,7 +8,9 @@ import java.util.concurrent.CountDownLatch;
  * Odjedzie dopiero po dotarciu wszystkich pasażerów.
  *
  * @see Pasażer
+ *
  * @author Kacper
+ * @author Marcin Ogorzałek
  */
 class Pociąg {
     private final int zarezerwowaneBilety;
