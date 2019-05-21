@@ -1,10 +1,10 @@
-package countdownlatch.E_zadanieCountDownLatchTimeout;
+package countdownlatch.F_zadanieCountDownLatchTimeout;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
-import countdownlatch.E_zadanieCountDownLatchTimeout.Napad.MetadaneNapadu;
+import countdownlatch.F_zadanieCountDownLatchTimeout.Napad.MetadaneNapadu;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

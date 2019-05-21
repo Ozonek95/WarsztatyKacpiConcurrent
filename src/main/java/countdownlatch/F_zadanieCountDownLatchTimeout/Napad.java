@@ -1,4 +1,4 @@
-package countdownlatch.E_zadanieCountDownLatchTimeout;
+package countdownlatch.F_zadanieCountDownLatchTimeout;
 
 import fabryczkapomocnicza.MyThreadFactory;
 import java.util.concurrent.CountDownLatch;
