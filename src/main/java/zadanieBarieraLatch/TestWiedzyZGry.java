@@ -1,4 +1,4 @@
-package G_zadanieZCalosci;
+package zadanieBarieraLatch;
 
 import fabryczkapomocnicza.MyThreadFactory;
 import java.util.ArrayList;

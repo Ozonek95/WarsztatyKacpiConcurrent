@@ -2,7 +2,7 @@
 <suite name="DuzeZadanieTest" parallel="methods" thread-count="5">
   <test name="DuzeZadanieTest">
     <classes>
-      <class name="G_zadanieZCalosci.WydarzenieGamingoweIntegrationTest" />
+      <class name="zadanieBarieraLatch.WydarzenieGamingoweIntegrationTest" />
     </classes>
   </test>
 </suite>

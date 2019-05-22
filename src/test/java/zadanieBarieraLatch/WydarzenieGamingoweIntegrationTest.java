@@ -1,4 +1,4 @@
-package G_zadanieZCalosci;
+package zadanieBarieraLatch;
 
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Awaitility.fieldIn;
@@ -6,7 +6,6 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.testng.annotations.Test;

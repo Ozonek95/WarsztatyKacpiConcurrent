@@ -1,4 +1,4 @@
-package G_zadanieZCalosci;
+package zadanieBarieraLatch;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;

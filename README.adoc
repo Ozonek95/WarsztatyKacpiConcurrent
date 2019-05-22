@@ -1,6 +1,16 @@
-= Warsztaty z wielowątkowości w Jawie - CountDownLatch, CyclicBarrier
+= Warsztaty z wielowątkowości w Jawie - CountDownLatch
 
-Hejo! Zapraszam na warsztacik z CountDownLatch i CyclicBarrier!
+////
+TODO: Ustalić w jaki sposób poruszać się po warsztacie i uwzględnić to w README
+    Sugestia - naszym zdaniem gałąź master powinna zawierać jedynie wprowadzenie i jedno przykładowe zadanie (B_przykład),
+    a reszta powinna zawierać szkielety klas i polecenia. Druga gałąź "rozwiązania" będzie miała dostępne zrobione przez nas
+    propozycje rozwiązań. Dzięki temu osoba przechodząca warsztat będzie mogła wygodnie i łatwo poruszać się między zadaniami
+    i przykładami rozwiązań.
+////
+
+Hejo! Zapraszam na warsztacik z CountDownLatch!
+
+Warsztat powinien zająć między 120-150 minut.
 
 Warsztat możesz rozwiązać na dwa sposoby. Poruszając się po pakietach w porządku alfabetycznym,
 lub przełączać się między poszczególnymi gałęziami. Polecam sposób z gałęziami, ponieważ nie będzie
@@ -11,18 +21,11 @@ Poruszaj się po pakietach w porządku alfabetycznym, czytaj treść, zrozum kon
 a następnie spróbuj się z zadaniami!
 
 W razie problemów, kombinuj chwilę sam, poczytaj dokumentację, przemyśl rozwiązanie.
-Jeżeli dalej będziesz miał problem, wołaj mnie śmiało i postaram się pomóc.
 
-Jestem świadomy tego, że przykłady pewnie nie są idealne.
+Jesteśmy świadomy tego, że przykłady pewnie nie są idealne. Staraliśmy się, żeby były stosunkowo proste i obrazowały koncept.
 
-Starałem się, żeby były stosunkowo proste i obrazowały koncept.
-
-W razie sugestii jak coś ulepszyć, proszę o kwit GitHubowy.
-
-Warsztat powinien zająć między 90-120 minut.
-
-Jeżeli się spodoba, zachęcam do odznaczek ;D jeżeli się nie podobało, piszcie śmiało co mogę zrobić lepiej następnym razem.
-
-Jeżeli chcesz przejść warsztat poruszając się po gałęziach, wykonaj polecenie git checkout countDownLatchWprowadzenie
+Jeżeli się spodoba, zachęcamy do odznaczek ;D jeżeli się nie podobało, piszcie śmiało co możemy zrobić lepiej następnym razem.
 
 Powodzonka!
+
+Kacper Staszek, Marcin Ogorzałek

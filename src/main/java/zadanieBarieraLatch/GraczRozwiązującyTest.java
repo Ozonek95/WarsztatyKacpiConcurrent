@@ -1,4 +1,4 @@
-package G_zadanieZCalosci;
+package zadanieBarieraLatch;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;

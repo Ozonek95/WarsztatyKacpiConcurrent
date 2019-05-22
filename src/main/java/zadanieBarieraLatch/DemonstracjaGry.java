@@ -1,8 +1,7 @@
-package G_zadanieZCalosci;
+package zadanieBarieraLatch;
 
 import fabryczkapomocnicza.MyThreadFactory;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
