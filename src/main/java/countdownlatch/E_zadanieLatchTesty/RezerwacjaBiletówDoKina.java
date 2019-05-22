@@ -1,58 +1,66 @@
 package countdownlatch.E_zadanieLatchTesty;
 
 import fabryczkapomocnicza.MyThreadFactory;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * Klasa symuluje rezerwowanie biletów do kina.
+ * Mamy tutaj sekcję krytyczną, oraz zatrzask, który czeka na wyprzedanie
+ * biletów.
+ * TODO:Zaimplementuj odpowiednie testy do tej klasy, zgodne z sygnaturami
+ *  metod testowych.
+ *  Zacznij od testowania z użyciem Awaitility, następnie napisz testy bez
+ *  wykorzystania tej biblioteki.
+ *
+ * @see CountDownLatch
+ * @see java.util.concurrent.locks.ReentrantLock
+ * @see <a href="https://github.com/awaitility/awaitility/wiki/Usage">Awaitility</a>
+ * @see <a href="https://testng.org/doc/documentation-main.html">TestNG</a>
+ *
  * @author Kacper Staszek
  * @author Marcin Ogorzałek
  */
 class RezerwacjaBiletówDoKina {
-  private static final int LICZBA_DOSTĘPNYCH_BIETÓW = 10;
+  private static final int LICZBA_DOSTĘPNYCH_BIETÓW = 5;
 
-  int liczbaBiletów;
+  private final int liczbaBiletów;
 
-  public RezerwacjaBiletówDoKina(int liczbaBiletów) {
+  RezerwacjaBiletówDoKina(int liczbaBiletów) {
     this.liczbaBiletów = liczbaBiletów;
   }
 
   public static void main(String[] args) {
     RezerwacjaBiletówDoKina rezerwacjaBiletówDoKina =
         new RezerwacjaBiletówDoKina(LICZBA_DOSTĘPNYCH_BIETÓW);
-    MatadaneKina metadaneKina = rezerwacjaBiletówDoKina.stworzeniePotrzebnychObiektów();
+    MetadaneRezerwacji metadaneKina = rezerwacjaBiletówDoKina.stworzeniePotrzebnychObiektów();
     rezerwacjaBiletówDoKina.uruchomienieRezerwacji(metadaneKina);
   }
 
-  MatadaneKina stworzeniePotrzebnychObiektów() {
-    CountDownLatch latch = new CountDownLatch(10);
+  MetadaneRezerwacji stworzeniePotrzebnychObiektów() {
+    CountDownLatch latch = new CountDownLatch(liczbaBiletów);
     Kino kino = new Kino(latch);
-    ExecutorService service = Executors.newFixedThreadPool(10,
+    ExecutorService service = Executors.newFixedThreadPool(liczbaBiletów,
         new MyThreadFactory("Klient"));
 
-    return new MatadaneKina(latch, kino, service);
+    return new MetadaneRezerwacji(latch, kino, service);
   }
 
-  void uruchomienieRezerwacji(MatadaneKina metadaneKina) {
+  void uruchomienieRezerwacji(MetadaneRezerwacji metadaneKina) {
     new Thread(metadaneKina.kino,"Kino").start();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < liczbaBiletów; i++) {
       metadaneKina.service.submit(new KlientKina(metadaneKina.kino, metadaneKina.latch));
     }
     metadaneKina.service.shutdown();
   }
 
-  class MatadaneKina {
+  class MetadaneRezerwacji {
     CountDownLatch latch;
     Kino kino;
     ExecutorService service;
 
-    public MatadaneKina(CountDownLatch latch, Kino kino, ExecutorService service) {
+    MetadaneRezerwacji(CountDownLatch latch, Kino kino, ExecutorService service) {
       this.latch = latch;
       this.kino = kino;
       this.service = service;
@@ -60,62 +68,4 @@ class RezerwacjaBiletówDoKina {
   }
 }
 
-class KlientKina implements Runnable{
 
-  private final Kino kino;
-  private final CountDownLatch latch;
-
-  KlientKina(Kino kino, CountDownLatch latch) {
-    this.kino = kino;
-    this.latch = latch;
-  }
-
-  @Override
-  public void run() {
-    System.out.println("Ale sobie zarezerwuje bilecik!!");
-    try {
-      kino.rezerwujBilet(this, ThreadLocalRandom.current().nextInt(5000));
-    } catch (InterruptedException ignore) {
-
-    }
-  }
-}
-
-class Kino implements Runnable {
-  private final CountDownLatch latch;
-  private List<KlientKina> klienciZRezerwacją = new ArrayList<>();
-  private Lock lock = new ReentrantLock();
-
-  Kino(CountDownLatch latch) {
-    this.latch = latch;
-  }
-
-  @Override
-  public void run() {
-    try {
-      latch.await();
-      System.out.println("Startujemy seans!");
-    } catch (InterruptedException ignore) {
-
-    }
-
-  }
-
-  void rezerwujBilet(KlientKina klientKina, int ileCzasuKlientZajmujeBilet)
-      throws InterruptedException {
-    try {
-      lock.lock();
-      System.out.println("Ktoś rezerwuje u nas bilecik.");
-      Thread.sleep(ileCzasuKlientZajmujeBilet);
-      latch.countDown();
-      klienciZRezerwacją.add(klientKina);
-      if(latch.getCount()>0) {
-        System.out.println("Bilecik zarezerwowany, zostało jeszcze " + latch.getCount());
-      } else {
-        System.out.println("Ostatni bilet zarezerwowany!");
-      }
-    } finally {
-      lock.unlock();
-    }
-  }
-}

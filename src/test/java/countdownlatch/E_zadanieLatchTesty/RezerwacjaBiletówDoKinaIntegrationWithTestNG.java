@@ -1,12 +1,10 @@
 package countdownlatch.E_zadanieLatchTesty;
 
-import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.fieldIn;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import countdownlatch.E_zadanieLatchTesty.RezerwacjaBiletówDoKina.MetadaneRezerwacji;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -16,21 +14,23 @@ import org.testng.annotations.Test;
  * @author Marcin Ogorzałek
  *
  * TODO:Napisz odpowiednie testy bazując na nazwie metod testowych.
- *  Użyj zewnętrznej biblioteki Awaitility.
+ *  Tym razem korzystaj tylko z TestNG
  *  Każdy test uruchamiaj minimum 10 razy, użyj puli wątków.
+ *  Gdy skończysz, zaobserwuj różnicę w wykonywaniu testów z użyciem Awaitility.
  */
 @Test
-public class RezerwacjaBiletówDoKinaIntegrationTestAwaitility {
-
+public class RezerwacjaBiletówDoKinaIntegrationWithTestNG {
   @Test(invocationCount = 10, threadPoolSize = 10, dataProvider = "numberOfTicketsAndExecutionTime")
-  public void allTicketsGetsSold(int numberOfTickets, int executionTime) {
+  public void allTicketsGetsSold(int numberOfTickets, int executionTime)
+      throws InterruptedException {
     // Given
     RezerwacjaBiletówDoKina rezerwacja = new RezerwacjaBiletówDoKina(numberOfTickets);
     MetadaneRezerwacji metadaneRezerwacji = rezerwacja.stworzeniePotrzebnychObiektów();
     // When
     rezerwacja.uruchomienieRezerwacji(metadaneRezerwacji);
+    Thread.sleep(executionTime*1000);
     // Then
-    await().atMost(executionTime, TimeUnit.SECONDS).until(metadaneRezerwacji.latch::getCount,equalTo(0L));
+    assertEquals(metadaneRezerwacji.latch.getCount(),0L);
   }
 
   @Test (invocationCount = 10, threadPoolSize = 10, dataProvider = "numberOfTicketsAndExecutionTime")
@@ -40,53 +40,47 @@ public class RezerwacjaBiletówDoKinaIntegrationTestAwaitility {
     MetadaneRezerwacji metadaneRezerwacji = rezerwacja.stworzeniePotrzebnychObiektów();
     // When
     rezerwacja.uruchomienieRezerwacji(metadaneRezerwacji);
+    Thread.sleep(executionTime*1000);
     // Then
-    await().atMost(executionTime, TimeUnit.SECONDS).until(fieldIn(metadaneRezerwacji.kino)
-        .ofType(List.class).andWithName("klienciZRezerwacją").call()::size,equalTo(numberOfTickets));
+    //FIXME: Na potrzeby tego testu możesz zmienić widoczność pola z listą rezerwacji.
+    // zauważ, że dzięki Awaitility nie musiałeś tego robić.
+    assertEquals(metadaneRezerwacji.kino.klienciZRezerwacją.size(),numberOfTickets);
   }
 
   @Test(invocationCount = 10, threadPoolSize = 10, dataProvider = "numberOfTicketsAndExecutionTime")
-  public void reservationLockGetsLocked(int numberOfTickets, int executionTime){
+  public void reservationLockGetsLocked(int numberOfTickets, int executionTime)
+      throws InterruptedException {
     // Given
     RezerwacjaBiletówDoKina rezerwacja = new RezerwacjaBiletówDoKina(numberOfTickets);
     MetadaneRezerwacji metadaneRezerwacji = rezerwacja.stworzeniePotrzebnychObiektów();
     ReentrantLock myLock = (ReentrantLock) metadaneRezerwacji.kino.lock;
     // When
     rezerwacja.uruchomienieRezerwacji(metadaneRezerwacji);
+    Thread.sleep(executionTime);
     //Then
-    await().atMost(executionTime,TimeUnit.SECONDS).until(myLock::isLocked,equalTo(true));
+    assertTrue(myLock.isLocked());
   }
 
   @Test(invocationCount = 10, threadPoolSize = 10, dataProvider = "numberOfTicketsAndExecutionTime")
-  public void lockHasNoWaitingThreadsAfterReservationEnds(int numberOfTickets, int executionTime){
+  public void lockHasNoWaitingThreadsAfterReservationEnds(int numberOfTickets, int executionTime)
+      throws InterruptedException {
     // Given
     RezerwacjaBiletówDoKina rezerwacja = new RezerwacjaBiletówDoKina(numberOfTickets);
     MetadaneRezerwacji metadaneRezerwacji = rezerwacja.stworzeniePotrzebnychObiektów();
     ReentrantLock myLock = (ReentrantLock) metadaneRezerwacji.kino.lock;
     // When
     rezerwacja.uruchomienieRezerwacji(metadaneRezerwacji);
+    Thread.sleep(executionTime*1000);
     //Then
-    await().atMost(executionTime,TimeUnit.SECONDS).until(myLock::hasQueuedThreads,equalTo(false));
+    assertFalse(myLock.hasQueuedThreads());
   }
 
   @DataProvider
   public static Object[][] numberOfTicketsAndExecutionTime() {
-      return new Object[][] {
-          {5,16},
-          {3,12},
-          {8,20}
-      };
+    return new Object[][] {
+        {5,16},
+        {3,13},
+        {8,20}
+    };
   }
 }
-
-//TODO: JAK TO DZIAŁA, DLACZEMU NIE TAK JAK SIĘ SPODZIEWAMY.
-//  @Test(invocationCount = 1000, threadPoolSize = 1000, successPercentage = 95)
-//  public void allTicketsGetsSold() {
-//    // Given
-//    RezerwacjaBiletówDoKina rezerwacja = new RezerwacjaBiletówDoKina(5);
-//    MetadaneRezerwacji matadaneKina = rezerwacja.stworzeniePotrzebnychObiektów();
-//    // When
-//    rezerwacja.uruchomienieRezerwacji(matadaneKina);
-//    // Then
-//    await().atMost(5, TimeUnit.SECONDS).until(matadaneKina.latch::getCount,equalTo(0L));
-//  }

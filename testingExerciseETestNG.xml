@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="RaceSuiteTest" parallel="methods" thread-count="6">
+    <test name="RaceSuiteTest">
+        <classes>
+            <class name="countdownlatch.E_zadanieLatchTesty.RezerwacjaBiletówDoKinaIntegrationWithTestNG" />
+        </classes>
+    </test>
+</suite>
